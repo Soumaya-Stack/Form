@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <style>
+        body {
+            font-family:serif;
+            background-color: #F7EFE5;
+            padding: 50px;
+        }
+        form {
+            background-color: #FEECB3;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        input[type="text"], input[type="email"], input[type="password"], input[type="tel"] {
+            width: 90%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        label {
+            font-weight: bold;
+        }
+        .error {
+            color: red;
+            font-size: 14px;
+            margin-top: -10px;
+        }
+        .success {
+            color: green;
+        }
+        input[type="submit"] {
+            background-color: #E2BFD9;
+            color: black;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            width: 100%;
+            border-radius: 5px;
+            font-family: serif;
+            font-weight:600;
+        }
+        input[type="submit"]:hover {
+            background-color: #674188;
+        }
+    </style>
+</head>
+<body>
+
+    <form id="myForm">
+        <h2>Registration Form</h2>
+        
+        <label for="name">Full Name</label>
+        <input type="text" id="name" name="name" required>
+        <span id="nameError" class="error"></span>
+
+        <label for="email">Email ID</label>
+        <input type="email" id="email" name="email" required>
+        <span id="emailError" class="error"></span>
+
+        <label for="phone">Phone Number</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" required>
+        <span id="phoneError" class="error"></span>
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required>
+        <span id="passwordError" class="error"></span>
+
+        <label for="confirmPassword">Confirm Password</label>
+        <input type="password" id="confirmPassword" name="confirmPassword" required>
+        <span id="confirmPasswordError" class="error"></span>
+
+        <input type="submit" value="Register">
+
+        <p id="formMessage"></p>
+    </form>
+
+    <script>
+        document.getElementById('myForm').addEventListener('submit', function (event) {
+            event.preventDefault();  // Prevent form submission
+
+            let formIsValid = true;
+
+            // Name Validation
+            const name = document.getElementById('name').value;
+            const nameError = document.getElementById('nameError');
+            if (name.length < 5) {
+                nameError.textContent = 'Name must be at least 5 characters long';
+                formIsValid = false;
+            } else {
+                nameError.textContent = '';
+            }
+
+            // Email Validation
+            const email = document.getElementById('email').value;
+            const emailError = document.getElementById('emailError');
+            if (!email.includes('@')) {
+                emailError.textContent = 'Please enter a valid email';
+                formIsValid = false;
+            } else {
+                emailError.textContent = '';
+            }
+
+            // Phone Number Validation
+            const phone = document.getElementById('phone').value;
+            const phoneError = document.getElementById('phoneError');
+            if (phone === '123456789' || phone.length !== 10 || isNaN(phone)) {
+                phoneError.textContent = 'Enter a valid 10-digit phone number';
+                formIsValid = false;
+            } else {
+                phoneError.textContent = '';
+            }
+
+            // Password Validation
+            const password = document.getElementById('password').value;
+            const passwordError = document.getElementById('passwordError');
+            if (password.length < 8 || password.toLowerCase() === 'password' || password.toLowerCase() === name.toLowerCase()) {
+                passwordError.textContent = 'Password must be at least 8 characters and not "password" or your name';
+                formIsValid = false;
+            } else {
+                passwordError.textContent = '';
+            }
+
+            // Confirm Password Validation
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            const confirmPasswordError = document.getElementById('confirmPasswordError');
+            if (password !== confirmPassword) {
+                confirmPasswordError.textContent = 'Passwords do not match';
+                formIsValid = false;
+            } else {
+                confirmPasswordError.textContent = '';
+            }
+
+            // Form Message
+            const formMessage = document.getElementById('formMessage');
+            if (formIsValid) {
+                formMessage.textContent = 'Form successfully submitted!';
+                formMessage.className = 'success';
+            } else {
+                formMessage.textContent = 'Please fix the errors above and try again.';
+                formMessage.className = 'error';
+            }
+        });
+    </script>
+
+</body>
+</html>
